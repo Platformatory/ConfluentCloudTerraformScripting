@@ -1,0 +1,2 @@
+,Cluster ID,Topic Name,Topic Config
+0,test-cluster-id,testtopic,"topicConfig: { ""num.partitions"": ""24"", ""retention.ms"": ""86400000"",""delete.retention.ms"": ""86400000""}"
