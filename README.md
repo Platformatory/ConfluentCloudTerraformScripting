@@ -97,6 +97,8 @@ terraform output -json > ./cluster_details.json
 
 - Sample input for the topic list can be found at `topic_parser/sample_raw_topic.csv`. This format must be maintained for the parser to work. Only "CSV" format is supported.
 
+- In case of retrieveing the topic names from an existing Kafka cluster, the `topic_parser/fetch_topics_from_CC.py` script can be used to retrieve the topics details and create the CSV file in the above mentioned format.
+
 - Navigate to `topic_parser` folder and run the following command,
 ```
 python parse_topics.py -t <path_to_topic_list_csv> -e <confluent_environment_id> -k <kafka_cluster_id> -i <cluster-kafka-api-key> -s <cluster-kafka-api-secret>
@@ -135,7 +137,7 @@ terraform output -json > ./topic_details.json
     
     - The `write_topics_final` and `read_topics_final` columns will contain the finalized list of topic names(prefixes)
     
-    - SA name cannot have more than 64 characters as this a limit enforced by Confluent
+    - SA name **cannot have more than 64 characters** as this a limit enforced by Confluent
 
     - Any 2 different applications cannot have the same SA name
 
@@ -143,7 +145,7 @@ terraform output -json > ./topic_details.json
 
 - Each application will have a separate folder under `applications` folder. Any changes to application level can be directly done inside the application level folder if necessary
 
-- One API Key and Secret will be provisioned for each row in the input file
+- One API Key and Secret will be provisioned for each row in the input file. Can be modified in the `terraform.tfvars` file in the application specific folder
 
 #### Execution steps
 
@@ -247,18 +249,14 @@ All the below commands will be executed from inside the `tf_execution_scripts` f
     
     - The generated CSV file will have the same number of rows as the inital input file provided
 
-6. Post the SA credentails to the Meesho Rest API
+6. Post the SA credentails to a Rest API (Optional)
 
-    - This script will post the populated SA credentials to the REST API provided by the Meesho team. 
+    - This script will post the populated SA credentials to the REST API provided. 
 
       ```
       python3 post_kafka_credentials_to_api.py
       ``` 
 
-## Important notes
+## Important notes 
 
-- All the above artefacts are specifically designed as per the requirements from the Meesho team. These artefacts are out-of-scope with regards to coverage from Confluent Support. 
-
-- Additionally, all the artefacts were prepared in the scope of this particular migration activity and inherently do not extend as a standard deployment pipeline for further usage. Kindly request the Meesho team to maintain and improve the artefacts if they wish to use it for their CI/CD pipelines.
-
-- The Python artefacts are not optimized for code reusability and modularization as this was prepared on a best effort basis in a reduced timeline.
+- All the artefacts were prepared based on our experience working with various companies for Kafka migration. Kindly request the respective teams to maintain and improve the artefacts if they wish to use it for their CI/CD pipelines.
